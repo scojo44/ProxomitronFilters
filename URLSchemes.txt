@@ -1,0 +1,65 @@
+# Protocols List - NoAddURL
+#
+# Written by:    ScoJo
+# Created:       Jan 30, 2001
+# Last Modified: Jan 13, 2002
+# List Name:     URL_Schemes
+#
+# Find more at http://www.w3.org/Addressing/schemes.html
+
+# Internet Protocols
+
+http(s|)
+ftp
+gopher
+nntp
+news
+snews
+file
+wais
+prospero
+ldap
+
+# Terminals
+
+telnet
+rlogin
+tn3270
+
+# Chat
+
+aim
+icq
+irc
+ymsgr
+
+# Online Services
+
+aol
+msn
+
+# Streaming Media
+
+rtsp
+pnm
+quicktime
+mms
+mmst
+mmsu
+msbd
+nsm
+vfn
+vnd.ms.radio
+
+# Internal Browser Schemes
+
+about
+chrome
+mailbox
+javascript
+livescript
+mocha
+view-source
+wysiwig
+res
+shell

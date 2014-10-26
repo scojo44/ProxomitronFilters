@@ -1,0 +1,529 @@
+# Top-Level Domains (TLDs) - NoHash NoAddURL
+#
+# Written by:    ScoJo
+# Created:       Jan 30, 2001
+# Last Modified: May 13, 2002
+# List Name:     Top_Level_Domains
+#
+
+##### The Three-Letter Domains
+
+net
+com
+org
+edu
+gov
+mil
+int
+nic
+
+##### The new TLDs, coming to a DNS server near you.
+
+name
+biz
+info
+pro
+coop
+aero
+museum
+
+##### Sub-TLDs in other countries (gov.uk, co.jp, etc.)
+
+co.$LST(Top_Level_Domains)
+com.$LST(Top_Level_Domains)
+net.$LST(Top_Level_Domains)
+org.$LST(Top_Level_Domains)
+edu.$LST(Top_Level_Domains)
+gov.$LST(Top_Level_Domains)
+mil.$LST(Top_Level_Domains)
+
+##### Country Code TLDs (ccTLDs)
+
+# Afghanistan
+af
+# Albania
+al
+# Algeria
+dz
+# American Samoa
+as
+# Andorra
+ad
+# Angola
+ao
+# Anguilla
+ai
+# Antartica
+aq
+# Antigua and Barbuda
+ag
+# Argentina
+ar
+# Armenia
+am
+# Aruba
+aw
+# Ascension Island
+ac
+# Australia
+au
+# Austria
+at
+# Azerbaijan
+az
+# Bahamas
+bs
+# Bahrain
+bh
+# Bangladesh
+bd
+# Barbados
+bb
+# Belarus
+by
+# Belgium
+be
+# Belize
+bz
+# Benin
+bj
+# Bermuda
+bm
+# Bhutan
+bt
+# Bolivia
+bo
+# Bosnia and Herzegovina
+ba
+# Botswana
+bw
+# Bouvet Island
+bv
+# Brazil
+br
+# British Indian Ocean Territory
+io
+# British Virgin Islands
+vg
+# Brunei Darussalam
+bn
+# Bulgaria
+bg
+# Burkina Faso
+bf
+# Burundi
+bi
+# Cambodia
+kh
+# Cameroon
+cm
+# Canada
+ca
+# Cap Verde
+cv
+# Cayman Islands
+ky
+# Central African Republic
+cf
+# Chad
+td
+# Chile
+cl
+# China
+cn
+# Christmas Island
+cx
+# Cocos (Keeling) Islands
+cc
+# Colombia
+co
+# Comoros
+km
+# Congo, Democratic People's Republic
+cd
+# Congo, Republic of
+cg
+# Cook Islands
+ck
+# Costa Rica
+cr
+# Cote d'Ivoire
+ci
+# Croatia/Hrvatska
+hr
+# Cuba
+cu
+# Cyprus
+cy
+# Czech Republic
+cz
+# Denmark
+dk
+# Djibouti
+dj
+# Dominica
+dm
+# Dominican Republic
+do
+# East Timor
+tp
+# Ecuador
+ec
+# Egypt
+eg
+# El Salvador
+sv
+# Equatorial Guinea
+gq
+# Eritrea
+er
+# Estonia
+ee
+# Ethiopia
+et
+# Falkland Islands (Malvina)
+fk
+# Faroe Islands
+fo
+# Fiji
+fj
+# Finland
+fi
+# France
+fr
+# French Guiana
+gf
+# French Polynesia
+pf
+# French Southern Territories
+tf
+# Gabon
+ga
+# Gambia
+gm
+# Georgia
+ge
+# Germany
+de
+# Ghana
+gh
+# Gibraltar
+gi
+# Greece
+gr
+# Greenland
+gl
+# Grenada
+gd
+# Guadeloupe
+gp
+# Guam
+gu
+# Guatemala
+gt
+# Guernsey
+gg
+# Guinea
+gn
+# Guinea-Bissau
+gw
+# Guyana
+gy
+# Haiti
+ht
+# Heard and McDonald Islands
+hm
+# Honduras
+hn
+# Hong Kong
+hk
+# Hungary
+hu
+# Iceland
+is
+# India
+in
+# Indonesia
+id
+# Iran
+ir
+# Iraq
+iq
+# Ireland
+ie
+# Isle of Man
+im
+# Israel
+il
+# Italy
+it
+# Jamaica
+jm
+# Japan
+jp
+# Jersey
+je
+# Jordan
+jo
+# Kazakhstan
+kz
+# Kenya
+ke
+# Kiribati
+ki
+# Korea, Democratic People's Republic
+kp
+# Korea, Republic of
+kr
+# Kuwait
+kw
+# Kyrgyzstan
+kg
+# Lao People's Democratic Republic
+la
+# Latvia
+lv
+# Lebanon
+lb
+# Lesotho
+ls
+# Liberia
+lr
+# Libyan Arab Jamahiriya
+ly
+# Liechtenstein
+li
+# Lithuania
+lt
+# Luxembourg
+lu
+# Macau
+mo
+# Macedonia, Former Yugoslav Republic
+mk
+# Madagascar
+mg
+# Malawi
+mw
+# Malaysia
+my
+# Maldives
+mv
+# Mali
+ml
+# Malta
+mt
+# Marshall Islands
+mh
+# Martinique
+mq
+# Mauritania
+mr
+# Mauritius
+mu
+# Mayotte
+yt
+# Mexico
+mx
+# Micronesia, Federal State of
+fm
+# Moldova, Republic of
+md
+# Monaco
+mc
+# Mongolia
+mn
+# Montserrat
+ms
+# Morocco
+ma
+# Mozambique
+mz
+# Myanmar
+mm
+# Namibia
+na
+# Nauru
+nr
+# Nepal
+np
+# Netherlands Antilles
+an
+# Netherlands
+nl
+# New Caledonia
+nc
+# New Zealand
+nz
+# Nicaragua
+ni
+# Niger
+ne
+# Nigeria
+ng
+# Niue
+nu
+# Norfolk Island
+nf
+# Northern Mariana Islands
+mp
+# Norway
+no
+# Oman
+om
+# Pakistan
+pk
+# Palau
+pw
+# Palestinian Territories
+ps
+# Panama
+pa
+# Papua New Guinea
+pg
+# Paraguay
+py
+# Peru
+pe
+# Philippines
+ph
+# Pitcairn Island
+pn
+# Poland
+pl
+# Portugal
+pt
+# Puerto Rico
+pr
+# Qatar
+qa
+# Reunion Island
+re
+# Romania
+ro
+# Russian Federation
+ru
+# Rwanda
+rw
+# Saint Kitts and Nevis
+kn
+# Saint Lucia
+lc
+# Saint Vincent and the Grenadines
+vc
+# San Marino
+sm
+# Sao Tome and Principe
+st
+# Saudi Arabia
+sa
+# Senegal
+sn
+# Seychelles
+sc
+# Sierra Leone
+sl
+# Singapore
+sg
+# Slovak Republic
+sk
+# Slovenia
+si
+# Solomon Islands
+sb
+# Somalia
+so
+# South Africa
+za
+# South Georgia and the South Sandwich Islands
+gs
+# Spain
+es
+# Sri Lanka
+lk
+# St. Helena
+sh
+# St. Pierre and Miquelon
+pm
+# Sudan
+sd
+# Suriname
+sr
+# Svalbard and Jan Mayen Islands
+sj
+# Swaziland
+sz
+# Sweden
+se
+# Switzerland
+ch
+# Syrian Arab Republic
+sy
+# Taiwan
+tw
+# Tajikistan
+tj
+# Tanzania
+tz
+# Thailand
+th
+# Togo
+tg
+# Tokelau
+tk
+# Tonga
+to
+# Trinidad and Tobago
+tt
+# Tunisia
+tn
+# Turkey
+tr
+# Turkmenistan
+tm
+# Turks and Ciacos Islands
+tc
+# Tuvalu
+tv
+# U.S. Virgin Islands
+vi
+# Uganda
+ug
+# Ukraine
+ua
+# United Arab Emirates
+ae
+# United Kingdom
+uk
+# United States
+us
+# Uruguay
+uy
+# US Minor Outlying Islands
+um
+# Uzbekistan
+uz
+# Vanuatu
+vu
+# Vatican City
+va
+# Venezuela
+ve
+# Vietnam
+vn
+# Wallis and Futuna Islands
+wf
+# Western Sahara
+eh
+# Western Samoa
+ws
+# Yemen
+ye
+# Yugoslavia
+yu
+# Zaire
+zr
+# Zambia
+zm
+# Zimbabwe
+zw

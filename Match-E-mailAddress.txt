@@ -1,0 +1,23 @@
+# Item Matched:  E-mail Address - NoAddURL
+#
+# Written by:    ScoJo
+# Created:       May 21, 2001
+# Last Modified: Jan 31, 2002
+# List Name:     Match_Email_Address
+# Lists Used:    Match_Hostname Match_IP_Address Match_URL_SAP
+# Variables:     \@ is the address with tags removed, &nbsp; changed to %20, etc.
+#
+# Description:
+#
+#    This is an include-style list for matching an e-mail address.
+#
+((mailto:)\#|$SET(#=mailto:))
+ (([a-z0-9_.-]+{1,*})\#
+ |<(^(/|)(a|br|p|td|tr|table|title|option))[^>]+>
+ |\&nbsp;$SET(#= )
+ )+{1,*}
+ (@|\&#[#64];)$SET(#=@)
+ (<[^>]+> )+
+ ($LST(Match_Hostname)
+ |$LST(Match_IP_Address)
+ )
