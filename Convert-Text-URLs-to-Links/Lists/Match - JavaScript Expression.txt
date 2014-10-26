@@ -1,0 +1,78 @@
+# Stuff in a JavaScript expression - NoAddURL
+#
+# Written by:    ScoJo
+# Created:       Aug 17, 2001
+# Last Modified: Jan 13, 2002
+# Syntax:        $LST(Match_JavaScript_Expr)
+#
+# Description:
+#
+#   This is a list of stuff found in a JavaScript expression.
+#   To use it, I highly recommend checking for stuff around it.
+#   For example,
+#
+#     foo = $LST(Match_JavaScript_Expr);
+#
+#   should match all of the stuff foo is set to.
+#
+# Note:
+#
+#   There's a few VBScript operators included but it doesn't fully match
+#   VBScript.  I recommend disabling filters that use this list on sites
+#   that use a lot of VBScript such as any site owned by Microsoft.
+
+# Strings are limited to concatenation operators.
+
+\s+ "*'( (\+|\&|,|\=\=(\=|)) $LST(Match_JavaScript_Expr)
+       |\?$LST(Match_JavaScript_Expr):$LST(Match_JavaScript_Expr)
+       |)
+
+# The Rest
+
+\s+
+ ($NEST(\(,$LST(Match_JavaScript_Expr),\))
+ |[0-9]+{1,*}
+ |-[0-9]+{1,*}
+ |/(\\/|[^/])+/[gi]+
+ |(!|~|\+\+|--|var |new |)
+  ([a-z_][a-z0-9_]+( . [a-z_][a-z0-9_]+)+
+     ( \( \)( . |)
+     | $NEST(\(,$LST(Match_JavaScript_Expr),\))( . |)
+     | $NEST(\[,$LST(Match_JavaScript_Expr),\])( . |)
+     |)
+  )+{1,*}
+  (\+\+|--|)
+ )
+ (\s+
+    ((\+|\&|,|\=\=|\=) "*' ((\+|\&|,|\=\=(\=|)) $LST(Match_JavaScript_Expr)
+                           |\?$LST(Match_JavaScript_Expr):$LST(Match_JavaScript_Expr)
+                           |)
+    |\?$LST(Match_JavaScript_Expr):$LST(Match_JavaScript_Expr)
+    |
+       (\+|-|\*|/|%|,|\^|!=
+       |\\|Mod|And|Not|Or|Xor
+       |\=+{1,3}
+       |\&+{1,2}
+       |\|+{1,2}
+       |<+{2,3}
+       |>+{2,3}
+       |<(=|>|)
+       |>(=|)
+       )
+       \s+
+       ($NEST(\(,$LST(Match_JavaScript_Expr),\))
+       |[0-9]+{1,*}
+       |-[0-9]+{1,*}
+       |/(\\/|[^/])+/[gi]+
+       |(!|~|\+\+|--|var |new |)
+        ([a-z_][a-z0-9_]+( . [a-z_][a-z0-9_]+)+
+           ( \( \)( . |)
+           | $NEST(\(,$LST(Match_JavaScript_Expr),\))( . |)
+           | $NEST(\[,$LST(Match_JavaScript_Expr),\])( . |)
+           |)
+        )+{1,*}
+        (\+\+|--|)
+       )
+    )
+ )+
+ [ ]+

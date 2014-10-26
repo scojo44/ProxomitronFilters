@@ -1,0 +1,123 @@
+# Nested HTML Ad Containers - NoAddURL
+#
+# Written by:    ScoJo
+# Created:       May 3, 2001
+# Last Modified: Apr 8, 2002
+# Syntax:        $LST(Ad_Containers)
+# Lists Used:    Ad_Code Ad_Containers Ad_Headers Match_Space
+# Requires Proxomitron Naoko 4.1+
+#
+# Description:
+#
+#   This list removes visual gaps left behind when an ad is filtered out of
+#   a web page.  The gaps are caused by HTML elements (usually tables) left
+#   with nothing inside.
+#
+# How it works:
+#
+#   The actual ad is the first line in the list.  This line checks another list
+#   to check for various types of ads.  The rest of the lines are HTML elements
+#   that have more elements nested inside or the ad itself.  For example, this
+#   HTML code will match:
+#
+#     <table width="468">
+#       <tr>
+#         <td>&nbsp;</td>
+#         <td>
+#           <center>
+#           [your ad here]
+#           </center>
+#         </td>
+#       </tr>
+#     </table>
+#     <br>
+#
+#   The list pulls this off by calling itself over and over again until it
+#   finds the actual ad.
+#
+# Here's the format of each item in the list:
+#
+#   $NEST(<tag>,(             - The element's start tag.
+#   ($LST(Match_Space)        - Various types of space.
+#   |$LST(Ad_Headers)         - Other stuff associated with an ad.
+#   |($NEST(< ! - -,- - >))\# - Comments are filtered out but reinserted later.
+#   )+
+#   $LST(Ad_Containers)       - Keep checking this list for nested elements or
+#                               until only "The Ad By Itself" matches.
+#   ($LST(Match_Space)        - More space.
+#   |$LST(Ad_Headers)         - Other stuff associated with an ad.
+#   |($NEST(< ! - -,- - >))\# - Comments are filtered out but reinserted later.
+#   )+
+#   ),</tag>)                 - The element's end tag & the end of the $NEST()
+#   $SET(#=:<tag>)            - The element that matched.  Useful for debugging.
+#
+# Notes:
+#
+# - Comments are stripped out like other tags in this list but can be
+#   reinserted in the filter's replace field using \# and \@.
+#
+# - Adding another element is simple.  Make a copy of one of the existing lines
+#   then change the start and end tag and the element's name in $SET() for the
+#   [AD] string.
+#
+##########################################################################
+
+# The Ad By Itself
+# ...and possibly more next to the first one.
+
+$LST(Ad_Code)   ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+
+ ($LST(Ad_Code) ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+
+
+# Scripts with another type of ad in the <NoScript> element.
+# The [AD] ID will be [ADType-NoScript], where ADType is the type of ad found.
+
+$NEST(<script(\s[^>]+|)>,</script>)   ($LST(Match_Space))+
+ ($NEST(<script(\s[^>]+|)>,</script>) ($LST(Match_Space))+)+
+ ($NEST(<noembed(\s[^>]+|)>,(  ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</noembed>)  $SET(#=<span class=PrxACRCode style=display:none;>-&lt;noembed&gt;</span>)|)
+  $NEST(<noscript(\s[^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</noscript>) $SET(#=<span class=PrxACRCode style=display:none;>-&lt;noscript&gt;</span>)
+
+# Plugins with another type of ad in the <NoEmbed> element.
+# The [AD] ID will be [ADType-NoEmbed], where ADType is the type of ad found.
+
+<embed(\s[^>]+|)>($LST(Match_Space))+</embed>|)($LST(Match_Space))+
+  $NEST(<noembed(\s[^>]+|)>,(  ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</noembed>)  $SET(#=<span class=PrxACRCode style=display:none;>-&lt;noembed&gt;</span>)
+
+# Don't filter stuff in multi-line textboxes
+
+$NEST(<textarea(\s[^>]+|)>,( * ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|$NEST(< ! - -,- - >))+)+{1,*} * ),</textarea>) && \#
+
+# Java Applets and Objects
+
+$NEST(<applet(\s[^>]+|)>,( (<param(\s[^>]+|)>|$LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</applet>) $SET(#=<span class=PrxACRCode style=display:none;>-&lt;applet&gt;</span>)
+$NEST(<object(\s[^>]+|)>,( (<param(\s[^>]+|)>|$LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</applet>) $SET(#=<span class=PrxACRCode style=display:none;>-&lt;object&gt;</span>)
+
+# Table-related Elements
+
+$NEST(<table(\s   [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</table>)   $SET(#=<span class=PrxACRCode style=display:none;>:&lt;table&gt;</span>)
+$NEST(<td(\s      [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</td>)      $SET(#=<span class=PrxACRCode style=display:none;>:&lt;td&gt;</span>)
+$NEST(<th(\s      [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</th>)      $SET(#=<span class=PrxACRCode style=display:none;>:&lt;th&gt;</span>)
+$NEST(<tr(\s      [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</tr>)      $SET(#=<span class=PrxACRCode style=display:none;>:&lt;tr&gt;</span>)
+$NEST(<tbody(\s   [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</tbody>)   $SET(#=<span class=PrxACRCode style=display:none;>:&lt;tbody&gt;</span>)
+$NEST(<thead(\s   [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</thead>)   $SET(#=<span class=PrxACRCode style=display:none;>:&lt;thead&gt;</span>)
+$NEST(<tfoot(\s   [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</tfoot>)   $SET(#=<span class=PrxACRCode style=display:none;>:&lt;tfoot&gt;</span>)
+
+# Common Elements
+
+$NEST(<center(\s  [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</center>)  $SET(#=<span class=PrxACRCode style=display:none;>:&lt;center&gt;</span>)
+$NEST(<div(\s     [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</div>)     $SET(#=<span class=PrxACRCode style=display:none;>:&lt;div&gt;</span>)
+$NEST(<font(\s    [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</font>)    $SET(#=<span class=PrxACRCode style=display:none;>:&lt;font&gt;</span>)
+$NEST(<iframe(\s  [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</iframe>)  $SET(#=<span class=PrxACRCode style=display:none;>:&lt;iframe&gt;</span>)
+$NEST(<ilayer(\s  [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</ilayer>)  $SET(#=<span class=PrxACRCode style=display:none;>:&lt;ilayer&gt;</span>)
+$NEST(<nobr(\s    [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</nobr>)    $SET(#=<span class=PrxACRCode style=display:none;>:&lt;nobr&gt;</span>)
+$NEST(<nolayer(\s [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</nolayer>) $SET(#=<span class=PrxACRCode style=display:none;>:&lt;nolayer&gt;</span>)
+$NEST(<p(\s       [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</p>)       $SET(#=<span class=PrxACRCode style=display:none;>:&lt;p&gt;</span>)
+$NEST(<small(\s   [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</small>)   $SET(#=<span class=PrxACRCode style=display:none;>:&lt;small&gt;</span>)
+$NEST(<span(\s    [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</span>)    $SET(#=<span class=PrxACRCode style=display:none;>:&lt;span&gt;</span>)
+
+# Rare Elements - I havan't seen these yet
+
+$NEST(<b(\s       [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</b>)       $SET(#=<span class=PrxACRCode style=display:none;>:&lt;b&gt;</span>)
+$NEST(<big(\s     [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</big>)     $SET(#=<span class=PrxACRCode style=display:none;>:&lt;big&gt;</span>)
+$NEST(<em(\s      [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</em>)      $SET(#=<span class=PrxACRCode style=display:none;>:&lt;em&gt;</span>)
+$NEST(<i(\s       [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</i>)       $SET(#=<span class=PrxACRCode style=display:none;>:&lt;i&gt;</span>)
+$NEST(<strong(\s  [^>]+|)>,( ($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Containers)($LST(Match_Space)|$LST(Ad_Headers)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</strong>)  $SET(#=<span class=PrxACRCode style=display:none;>:&lt;strong&gt;</span>)

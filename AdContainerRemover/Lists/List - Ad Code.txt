@@ -1,0 +1,164 @@
+# Ad Code List - NoAddURL
+#
+# Written by:    ScoJo
+# Created:       Oct 25, 2000
+# Last Modified: May 11, 2002
+# Syntax:        $LST(Ad_Code)
+# Lists Used:    AdKeys Ad_Code Match_Space BlockList_Images Allow_Java
+# Requires Proxomitron Naoko 4.1+
+#
+# Description:
+#
+#   This is a collection of code used to match ads.  Actually, anything you
+#   want to strip out of webpages could be added to this list.  If you need
+#   to preserve anything, use \#.
+#
+# The debug [AD] IDs:
+#
+#           Name - Type of Ad
+#           -----------------
+#          Image - Matched in the image blocklist
+#      ImageLink - Matched in the image blocklist
+#       Image-AD - The original linked-image banner ad
+#      Submit-AD - Image ads that submit forms when clicked
+#      IFrame-AD - Ads in <IFrame> tags
+#      ILayer-AD - Ads in <ILayer> tags
+#       Layer-AD - Ads in  <Layer> tags
+#     EScript-AD - Ads fetched though external scripts
+#     IScript-AD - Ad scripts (disabled by default)
+#      -NoScript - Scripts with a simpler ad in the <noscript> block
+#       -NoEmbed - Plugins with a simpler ad in the <noembed> block
+#      Plugin-AD - Plugins used for ads (including Flash ads)
+#      Object-AD - Ad <objects>
+#        Java-AD - Java "Adlets" (ads only)
+#    Java-Applet - Java Applets  (all Java applets)
+#        Form-AD - Form-based ads
+#     Flycast-AD - Flycast's ad-display and user-tracking code
+#   FastClick-AD - FastClick's ad-display and user-tracking code
+#   Click2Net-AD - Click2Net's ad-display and user-tracking code
+#
+#====== Image Blocklist =========================
+# Sample match: <img*src=list*> or <a> <img*src=list*> </a>
+
+<im(g|age)[^>]++src=$AV( $LST(BlockList_Images))[^>]+>
+   $SET(#=<span class=PrxACRCode style=display:none;>#Image</span>)
+<a\s[^>]+> ($LST(Match_Space))+ <im(g|age)[^>]++src=$AV( $LST(BlockList_Images))[^>]+> ($LST(Match_Space))+ </a>
+   $SET(#=<span class=PrxACRCode style=display:none;>#ImageLink</span>)
+
+#====== Linked Images ===========================
+# Sample match: <a href="Ad-URL"> <img src="Ad-URL"> </a>
+
+(<a\s[^>]++href=$AV(*)[^>]+> (($LST(Match_Space))+ <im(g|age)\s[^>]++src=$AV(*)[^>]+>)+{1,*}
+   &&*(href|src)=$AV( $LST(AdKeys)*)*
+   )
+   (((^<a\s)&?)++< / a >|)
+   $SET(#=<span class=PrxACRCode style=display:none;>#Image-AD</span>)
+
+#====== Submit Images ===========================
+# Sample match: <input type=submit src="Ad-URL">
+
+<input\s[^>]++src=$AV( $LST(AdKeys)*)[^>]+>
+   $SET(#=<span class=PrxACRCode style=display:none;>#Submit-AD</span>)
+
+#====== IFrames & Layers ========================
+# Sample match: <iframe src="Ad-URL"> stuff </iframe>
+
+<iframe\s[^>]++src=$AV( $LST(AdKeys)*)[^>]+>
+   ((?&(^<iframe\s))++</iframe>|)
+   $SET(#=<span class=PrxACRCode style=display:none;>#IFrame-AD</span>)
+<ilayer\s[^>]++src=$AV( $LST(AdKeys)*)[^>]+>
+   ((?&(^<ilayer\s))++</ilayer>|)
+   $SET(#=<span class=PrxACRCode style=display:none;>#ILayer-AD</span>)
+<layer\s[^>]++src=$AV( $LST(AdKeys)*)[^>]+>
+   ((?&(^<layer\s))++</layer>|)
+   $SET(#=<span class=PrxACRCode style=display:none;>#Layer-AD</span>)
+
+#====== Scripts - External ======================
+# Sample match: <script src="Ad-URL">
+
+<script\s[^>]++src=$AV( $LST(AdKeys)*)[^>]+>
+   (($LST(Match_Space))+ </script>|)
+   (($LST(Match_Space))+ $NEST(<noscript(\s|>),</noscript>)|)
+   $SET(#=<span class=PrxACRCode style=display:none;>#EScript-AD</span>)
+
+#====== Scripts - Inline ========================
+# This is disabled by default because it could match too much.
+# Just uncomment the lines to enable.
+# Sample match: <script> * Ad-URL * </script>
+
+#$NEST(<script(\s[^>]+|)>,</script>)
+#   (($LST(Match_Space))+ $NEST(<noscript(\s|>),</noscript>)|)
+#   &&
+#   *=$AV( $LST(AdKeys)*)*
+#   $SET(#=<span class=PrxACRCode style=display:none;>#IScript-AD</span>)
+
+#====== Embedded Plugins ========================
+# This will match Flash ads, too
+# Sample match: <embed src="Ad-URL">
+
+<embed\s[^>]++src=$AV( $LST(AdKeys)*)[^>]+>
+   (($LST(Match_Space))+</embed>|)
+   $SET(#=<span class=PrxACRCode style=display:none;>#Plugin-AD</span>)
+
+#====== HTML 4 Objects ==========================
+# Sample match: <object codebase="Ad-URL"> stuff </object>
+
+<object\s[^>]++(code(base|)|data|classid|archive)=$AV($LST(AdKeys)*)[^>]+>
+   *< / object >
+   $SET(#=<span class=PrxACRCode style=display:none;>#Object-AD</span>)
+
+#====== Java Applets - Ads ======================
+# Sample match: <applet code="Ad-URL"> stuff </applet>
+
+<applet\s[^>]++(code(base|)|src|archive)=$AV($LST(AdKeys)*)[^>]+>
+   *< / applet >
+   $SET(#=<span class=PrxACRCode style=display:none;>#Java-AD</span>)
+
+#====== Java Applets - All ======================
+# Sample match: <applet> stuff </applet>
+
+#<applet\s*< / applet >
+#   $URL(^[^:]+://$LST(Allow_Java))
+#   $SET(#=<span class=PrxACRCode style=display:none;>#Java-Applet</span>)
+
+#====== Forms ===================================
+# This one is tricky because layout code must be preserved
+# Sample match: <form action="Ad-URL"> stuff </form>
+
+$NEST(<form(\s[^>]+|)>,</form>)
+   &&
+   <form\s[^>]++action=$AV( $LST(AdKeys)*)[^>]+>
+   ($NEST(<table(\s   [^>]+|)>,</table>)
+   |$NEST(<tbody(\s   [^>]+|)>,</tbody>)
+   |$NEST(<tfoot(\s   [^>]+|)>,</tfoot>)
+   |$NEST(<thead(\s   [^>]+|)>,</thead>)
+   |$NEST(<td(\s      [^>]+|)>,</td>)
+   |$NEST(<tr(\s      [^>]+|)>,</tr>)
+   |$NEST(<th(\s      [^>]+|)>,</th>)
+   |$NEST(<div(\s     [^>]+|)>,</div>)
+   |$NEST(<script(\s  [^>]+|)>,</script>)
+   |$NEST(<noscript(\s[^>]+|)>,</noscript>)
+   |(<(/|) (table|td|th|tr|tbody|thead|tfoot|div|(no|)script)(\s[^>]+|)>)\#
+   |(?&(^<(/|)(table|td|th|tr|tbody|thead|tfoot|div|(no|)script)))+
+   )+
+   $SET(#=<span class=PrxACRCode style=display:none;>#Form-AD</span>)
+
+#====== Flycast Ads =============================
+
+$NEST(<script(\s[^>]+|)>,*FlycastVersion*,</script>)
+   ($LST(Match_Space))+ <script(\s[^>]+|)>(</script>|)
+   ($LST(Match_Space))+ $NEST(<script(\s[^>]+|)>,*FlycastLoaded*,</script>)
+   ($LST(Match_Space))+ $NEST(<noscript(\s|>),</noscript>)
+   $SET(#=<span class=PrxACRCode style=display:none;>#Flycast-AD</span>)
+
+#====== FastClick Ads ===========================
+
+< ! - -    FASTCLICK.COM [^>]+>*
+   < ! - - FASTCLICK.COM [^>]+>
+   $SET(#=<span class=PrxACRCode style=display:none;>#FastClick-AD</span>)
+
+#====== Click2Net Ad ============================
+
+<!-- BEGIN   CLICK2NET CODE [^>]+>
+   *<!-- END CLICK2NET CODE -->
+   $SET(#=<span class=PrxACRCode style=display:none;>#Click2Net-AD</span>)

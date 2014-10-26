@@ -1,0 +1,37 @@
+# Protocols List - NoAddURL
+#
+# Written by:    ScoJo
+# Created:       Jan 30, 2001
+# Last Modified: Jan 13, 2002
+# Syntax:        $LST(URL_Schemes)
+
+# The usual protocols
+
+http(s|)
+ftp
+gopher
+telnet
+news
+nntp
+file
+irc
+wais
+prospero
+
+# Streaming media protocols
+
+rtsp
+pnm
+mms
+
+# Internal browser schemes
+
+about
+chrome
+javascript
+livescript
+mocha
+view-source
+wysiwig
+res
+shell

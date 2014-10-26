@@ -1,0 +1,26 @@
+# Item Matched:  Hostname - NoAddURL
+# Written by:    ScoJo
+# Created:       May  20, 2001
+# Last Modified: July 16, 2001
+# Syntax:        $LST(Match_Hostname)
+# Lists Used:    Top_Level_Domains Match_URL_SAP
+# Variables:     \@ is the hostname with tags removed, &nbsp; changed to %20, etc.
+#
+# The (^[a-z0-9_-]) at the end prevents matching something that isn't a
+# hostname like nicepic.jpg and comp.os.linux.networking
+#
+(
+    ([a-z0-9])\#
+    ((.)\#|%2E$SET(#=.))
+    ($LST(Top_Level_Domains))\#(^[a-z0-9_-])
+ |
+    ([a-z0-9])\#
+    (
+       (([a-z0-9-]+{1,*})\#(^.$LST(Match_URL_SAP))
+       |<(^(/|)(a|br|p|td|tr|table|title|option))[^>]+>(^.$LST(Match_URL_SAP))
+       |\&nbsp;
+       )+{1,*}
+       ((.)\#|%2E$SET(#=.))
+    )+{1,*}
+    ($LST(Top_Level_Domains))\#(^[a-z0-9_-])
+ )

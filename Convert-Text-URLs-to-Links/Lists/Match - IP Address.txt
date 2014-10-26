@@ -1,0 +1,18 @@
+# Item Matched:  IP Address - NoAddURL
+# Written by:    ScoJo
+# Created:       July 16, 2001
+# Last Modified: July 16, 2001
+# Syntax:        $LST(Match_IP_Address)
+# Variables:     \@ is the IP address with tags removed
+#
+# Description:
+#
+#    This is an include-style list for matching an IP address.
+#
+([#0:255])\#  (<(^(/|)(a|br|p|td|tr|table|pre|title|option))[^>]+> )+
+        (.)\# (<(^(/|)(a|br|p|td|tr|table|pre|title|option))[^>]+> )+
+ ([#0:255])\# (<(^(/|)(a|br|p|td|tr|table|pre|title|option))[^>]+> )+
+        (.)\# (<(^(/|)(a|br|p|td|tr|table|pre|title|option))[^>]+> )+
+ ([#0:255])\# (<(^(/|)(a|br|p|td|tr|table|pre|title|option))[^>]+> )+
+        (.)\# (<(^(/|)(a|br|p|td|tr|table|pre|title|option))[^>]+> )+
+ ([#1:255])\#

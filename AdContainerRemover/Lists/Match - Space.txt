@@ -1,0 +1,56 @@
+# Various Types of Space - NoAddURL
+#
+# Written by:    ScoJo
+# Created:       July 19, 2000
+# Last Modified: May  11, 2002
+# Syntax:        $LST(Match_Space)
+# Requires Proxomitron Naoko 4 beta 5+
+#
+# Description:
+#
+#   Common HTML code used for space.
+#
+# Changes:
+#
+#   1.0.1 - May 11, 2002
+#     - Made $NEST() calls more strict.
+#     - Added <font> and <p> to the Space-only Elements section.
+#   1.0   - Aug 21, 2001
+#     - First release
+#
+# ===== Basic Space
+
+\s
+<p>
+<br(\s[^>]+|)>
+<wbr>
+<spacer(\s[^>]+|)>
+<tab(\s[^>]+|)>
+\&nbsp;
+\&ensp;
+\&emsp;
+\&thinsp;
+
+# ===== Image tags used for spacers
+
+<(img|image)\s[^>]++(width|height)=$AV([#0:3])[^>]+>
+<(img|image)\s[^>]++src=\w/(empty|1x1|pixel|shim).gif[^>]+>
+
+# ===== Not space but useless anyway
+# Use \# and \@ to preserve stuff.
+
+<hr(\s[^>]+|)>
+
+# ===== Space-only Elements
+
+$NEST(<center(\s[^>]+|)>,($LST(Match_Space))+,</center>)
+$NEST(<font(\s  [^>]+|)>,($LST(Match_Space))+,</font>)
+$NEST(<p(\s     [^>]+|)>,($LST(Match_Space))+,</p>)
+$NEST(<span(\s  [^>]+|)>,($LST(Match_Space))+,</span>)
+$NEST(<table(\s [^>]+|)>,($LST(Match_Space))+,</table>)
+$NEST(<td(\s    [^>]+|)>,($LST(Match_Space))+,</td>)
+$NEST(<tr(\s    [^>]+|)>,($LST(Match_Space))+,</tr>)
+$NEST(<th(\s    [^>]+|)>,($LST(Match_Space))+,</th>)
+$NEST(<tbody(\s [^>]+|)>,($LST(Match_Space))+,</tbody>)
+$NEST(<thead(\s [^>]+|)>,($LST(Match_Space))+,</thead>)
+$NEST(<tfoot(\s [^>]+|)>,($LST(Match_Space))+,</tfoot>)

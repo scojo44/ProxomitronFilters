@@ -1,0 +1,42 @@
+/* Proxomitron Plain Text View Stylesheet
+ * Written by:    ScoJo
+ * Created:       July 28 2001
+ * Last Modified: May  21 2002
+ * Note:          This file is used by the Plain Text View filters
+ **************************/
+@media screen, projection
+{
+  BODY {
+    background-color: black;
+    color:            yellow;
+  }
+  A:link {
+    color:            aqua;
+  }
+  A:visited {
+    color:            #00C000;
+  }
+  A:active {
+    color:            red;
+  }
+}
+
+@media print
+{
+  BODY {
+    background-color: white;
+    color:            black;
+  }
+  A:link {
+    color:            blue;
+  }
+  A:visited {
+    color:            #00C000;
+  }
+  A:active {
+    color:            red;
+  }
+  .PTVHeader {
+    display:          none;
+  }
+}

@@ -1,0 +1,34 @@
+# Images to Be Removed
+#
+# Written by:    ScoJo
+# Created:       Apr 26, 2000
+# Last Modified: May 11, 2002
+# Syntax:        $LST(BlockList_Images)
+# Requires Proxomitron Naoko 4.1+
+#
+# Description:
+#
+#   This is a list of images to be removed from web pages.  Useful for
+#   compacting frequently visited pages.  This is not a list of URLs.
+#   Entries in this list are from the SRC= attribute of <IMG> tags.
+#
+# Examples:
+# 
+#   mycutekitty.jpg               $URL([^:]+://www.myhomepage.com)
+#   images/icon.gif               $URL([^:]+://www.geocities.com/geouser/)
+#   http://www.microsoft.com/ielogo.gif
+
+# Art Bell - Remove blue graphics that just take up space after ads are gone.
+
+page/bluetopcorner.gif            $URL([^:]+://www.artbell.com)
+page/bluebotcorner.gif            $URL([^:]+://www.artbell.com)
+
+# Audiogalaxy - Remove logo for speed
+
+\wlogo_home.gif                   $URL([^:]+://www.audiogalaxy.com)
+
+# Lycos - Strip out Lubid Bug
+
+http://lubid.lycos.com/one.asp\?\w
+
+# User-added entries

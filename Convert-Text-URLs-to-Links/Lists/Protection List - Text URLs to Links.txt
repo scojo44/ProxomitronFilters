@@ -1,0 +1,73 @@
+# Stuff with URLs that shouldn't be converted to links. - NoAddURL
+#
+# Written by:    ScoJo
+# Created:       Feb  4, 2001
+# Last Modified: Jan 16, 2002
+# Syntax:        $LST(Protect_Text_URLs)
+# Lists Used:    Match_URL Match_Email_Address Match_Hostname Match_JavaScript_Expr Protect_Text_URLs
+#
+# Description
+#
+#   This is a list of stuff with URLs that shouldn't be matched by filters
+#   that convert text URLs to links.  (Thanks to Scott for pointing out
+#   this technique a while ago.  It works for now, but I wish there was a
+#   better solution.)  It took a lot of trial and error to come up with
+#   this list of protected stuff and it still isn't 100%.
+
+##### Web Page Info
+
+<!doctype*>
+<!html*>
+<title*</title>
+
+##### HTML Comments (except script hiders)
+
+$NEST(< ! - -,- - >)(^ </(script|style)>) $TYPE(^js)
+
+##### JavaScript Comments (not doctype declarations)
+
+[ \r\n\t]//(^[^<]++>)[^\n\r]+
+$NEST(/\*,\*/)
+
+##### JavaScript cases in switch() statements
+
+case "*'
+
+##### CSS url()s
+
+url\( $LST(Match_URL) \)
+
+##### If VBScript Then...
+
+if $LST(Match_JavaScript_Expr) Then
+
+##### HTML Attributes
+
+\= ($NEST(\\",[^\r\n]+,\\")
+   |$NEST(\\',[^\r\n]+,\\')
+   |$AV([^\r\n]+)
+   )
+
+##### HTML Attributes and JavaScript Stuff
+#
+# JavaScript stuff includes variables, arrays, function calls,
+# assignments, increments, decrements.
+
+[ \r\n\t\{]
+ (!|~|\+\+|--|var |new |)
+ [a-z_][a-z0-9_.]+[ ]+
+ (=$LST(Match_JavaScript_Expr)
+ |$NEST(\(,$LST(Match_JavaScript_Expr),\))
+ |$NEST(\[,$LST(Match_JavaScript_Expr),\])
+ |\+\+|--
+ |\( \)
+ )
+
+##### Linked Text
+
+>(?&(^< (a\s[^>]++href=
+        |script\s
+        )
+    )
+ )++{*,256}
+ < / a >

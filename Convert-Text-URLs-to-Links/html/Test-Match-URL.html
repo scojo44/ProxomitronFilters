@@ -1,0 +1,103 @@
+<html>
+<head>
+<title>Convert Text URLs to Links Test URLs</title>
+</head>
+<body bgcolor="black" text="yellow" link="aqua" vlink="#00C000">
+This is a page for testing filters that convert text-only URLs to
+clickable links.  The slow version of the Match_URL list should
+match the ones the fast one doesn't.
+<p>
+Real world test pages:
+<br>http://www.virtualsalt.com/warning.htm - Several full URLs
+<br>http://grc.com/dos/attacklog.htm - Lots of IP addresses and hostnames
+
+<pre>
+E-mail address tests
+--------------------
+i@i.il
+billg@microsoft.com
+billg@<b>microsoft</b>.com. - Period should not be in the link
+mailto:billg@microsoft.com
+billg&#064;microsoft.com   - billg&amp;#064;microsoft.com
+bill<span style="font-weight:bold;">g&#064;micro</span>soft.com  - bill&lt;span style="font-weight:bold;"&gt;g&amp;#064;micro&lt;/span&gt;soft.com
+
+Hostname tests
+--------------
+www.mail.netzero.com       - should match the whole hostname
+foo.net.com                - should match the whole hostname
+www....foo.com             - shouldn't match?
+roadsign.jpg               - shouldn't match (filename)
+comp.os.linux.networking   - shouldn't match (newsgroup)
+.com .net .co.uk           - first two shouldn't match.
+
+IP address tests
+----------------
+192.168.96.0              - doesn't match, not an assignable IP address.
+10.174.247.105
+@10.141.233.173
+telnet://192.168.128.1:1234
+
+Protocol from hostname tests
+----------------------------
+ftp.cdrom.com              - should be an FTP link
+news.alt.net               - should be a nntp link
+gopher.thegold.org         - should be a gopher link
+telnet.vt100.com           - should be a telnet link
+mud.adventure.com:12345    - should be a telnet link
+bbs.local.org:23           - should be a telnet link
+ftp.com                    - should be an HTTP link
+ftp.ftp.com                - should be an FTP link
+gopher.co.uk               - should be an HTTP link
+telnet.gopher.co.uk        - should be a telnet link
+http://ftp.cdrom.com/pub/  - should be an HTTP link
+
+End of URL tests
+----------------
+www.foo.com.               - period shouldn't be in URL
+www.<b>foo.com</b>.              - period shouldn't be in URL
+http://www.artbell.com/<strong>page/wwwartbellcom.gif</strong>,
+                           - comma shouldn't be in above URL
+http://news.baz.edu/!      - ! shouldn't be in URL
+ftp://ftp.mit.edu/.message.<br>   more stuff down here    - end period shouldn't be in above URL
+(http://news.baz.edu/)     - () shouldn't be in URL
+(ftp.netscrape.com)        - () shouldn't be in URL
+[groups.yahoo.com]         - [] shouldn't be in URL
+<www.telnet.org>           - <> shouldn't be in URL
+How do I get to www.books4dummies.com?
+                           - ? shouldn't be in above URL
+
+Netscape JavaScript Reference window.location examples
+------------------------------------------------------
+http://home.netscape.com/
+ftp://ftp.mine.com/home/mine
+mailto:info@netscape.com
+news://news.scruznet.com/comp.lang.javascript
+gopher.myhost.com
+
+Weird URLs
+-----------------
+wakusei.cplaza.ne.jp/twn/www.css
+ftp.demon.co.uk /pub/news/doc/so1036.txt  - FTP host, a space, then the path
+http://www.safeweb.com.net/o/_o(154):_win(9):http://www.betanews.com/
+http://www.microsoft.com:3128@38.185.125.214/7/1156/95/8e7dd1958827d1/www.ya.ru/
+
+Protect list tests
+------------------
+URLs in // comments shouldn't match.
+<a href="http://www.right.com/">www.wrong.com</a>       // Already existing link should go to www.right.com
+
+<a href="http://www.right.com/">x <b>www.<font size="+1">wrong</font>.com</b>
+then, <span style="font-weight: italic; background-color: #040;">http://www.wrong.net/</span></a>
+// the above two lines should link to www.right.com
+
+CSS: The url() part shouldn't match
+body {background-image: url(http://www.example.com/back.gif)}
+
+JavaScript: object.name and www.example.com shouldn't
+match in the below if() line.
+if(checked && (object.name == 'www.example.com'))
+
+goto(window, 'http://proxomitron.cjb.net/') // Proxo's address shouldn't match
+</pre>
+</body>
+</html>

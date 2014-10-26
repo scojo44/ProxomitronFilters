@@ -1,0 +1,27 @@
+# Item Matched:  Stuff at the end of a URL that shouldn't be a part of it - NoAddURL
+# Written by:    ScoJo
+# Created:       May  20, 2001
+# Last Modified: June 22, 2001
+# Syntax:        $LST(Match_URL_SAP)
+#
+# This list is to help simplify the Match_URL and Match_Hostname lists.
+# It is the list of stuff that would come after a dot that suggest the
+# dot is not a part of a URL or hostname.
+#
+(<(^a|br|p|td|tr|table|title)[^>]+>)+
+ (\s
+ |.
+ |\"
+ |\'
+ |\)
+ |\w\((*&&(^[a-z0-9]+))\)
+ |<(/|)
+    (a
+    |br
+    |p
+    |td
+    |tr
+    |table
+    |title
+    )
+ )

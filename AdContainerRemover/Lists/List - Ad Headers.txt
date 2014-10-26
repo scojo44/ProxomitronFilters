@@ -1,0 +1,79 @@
+# Ad Header List - NoAddURL
+#
+# Written by:    ScoJo
+# Created:       Jan  6, 2002
+# Last Modified: May 11, 2002
+# Syntax:        $LST(Ad_Headers)
+# Requires Proxomitron Naoko 4.1+
+#
+# Description:
+#
+#   This is a list of advertisment notifiers, titles for blocks of ads,
+#   links to a site's ad rates, etc.
+
+A d v e r t( i s e m e n t|)( s|)                 $SET(#=<span class=PrxACRCode style=display:none;>#TextHeader</span>)
+Featured Merchants                                $SET(#=<span class=PrxACRCode style=display:none;>#TextHeader</span>)
+Please support our sponsor                        $SET(#=<span class=PrxACRCode style=display:none;>#TextHeader</span>)
+sponsor                                           $SET(#=<span class=PrxACRCode style=display:none;>#TextHeader</span>)
+Support The DrudgeReport; Visit Our Advertisers   $SET(#=<span class=PrxACRCode style=display:none;>#TextHeader</span>)
+......+
+
+# "Advertisement" images
+
+(<a\s[^>]+> |)<img\s[^>]++src=$AV(*[^a-z]
+   (advert(ising|isement|)
+   |adfoot
+   |adinfo
+   )
+   [0-9]+.(gif|png|jpg)
+ )[^>]+>( </a>|)
+ $SET(#=<span class=PrxACRCode style=display:none;>#ImageHeader</span>)
+
+# "Click Here", "Visit Our Sponsor" and other text-only Links
+
+<a\s[^>]++href=$AV( $LST(AdKeys)*)[^>]+>
+   ([a-z0-9!.' ]+
+   |<(^img\s|a\s)[^>]+>
+   )+< / a >
+   $SET(#=<span class=PrxACRCode style=display:none;>#TextLink</span>)
+#   (((^<a\s)&?)++< / a >|)
+#   &&(^*<img[^>]+>*)
+
+#
+# Ad headers contained inside elements
+#
+
+# Don't filter stuff in multi-line textboxes
+
+$NEST(<textarea(\s[^>]+|)>,( * ($LST(Ad_Headers)($LST(Match_Space)|$NEST(< ! - -,- - >))+)+{1,*} * ),</textarea>) && \#
+
+# Table-related Elements
+
+$NEST(<table(\s   [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</table>)   $SET(#=<span class=PrxACRCode style=display:none;>:&lt;table&gt;</span>)
+$NEST(<td(\s      [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</td>)      $SET(#=<span class=PrxACRCode style=display:none;>:&lt;td&gt;</span>)
+$NEST(<th(\s      [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</th>)      $SET(#=<span class=PrxACRCode style=display:none;>:&lt;th&gt;</span>)
+$NEST(<tr(\s      [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</tr>)      $SET(#=<span class=PrxACRCode style=display:none;>:&lt;tr&gt;</span>)
+$NEST(<tbody(\s   [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</tbody>)   $SET(#=<span class=PrxACRCode style=display:none;>:&lt;tbody&gt;</span>)
+$NEST(<thead(\s   [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</thead>)   $SET(#=<span class=PrxACRCode style=display:none;>:&lt;thead&gt;</span>)
+$NEST(<tfoot(\s   [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</tfoot>)   $SET(#=<span class=PrxACRCode style=display:none;>:&lt;tfoot&gt;</span>)
+
+# Common Elements
+
+$NEST(<center(\s  [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</center>)  $SET(#=<span class=PrxACRCode style=display:none;>:&lt;center&gt;</span>)
+$NEST(<div(\s     [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</div>)     $SET(#=<span class=PrxACRCode style=display:none;>:&lt;div&gt;</span>)
+$NEST(<font(\s    [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</font>)    $SET(#=<span class=PrxACRCode style=display:none;>:&lt;font&gt;</span>)
+$NEST(<iframe(\s  [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</iframe>)  $SET(#=<span class=PrxACRCode style=display:none;>:&lt;iframe&gt;</span>)
+$NEST(<ilayer(\s  [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</ilayer>)  $SET(#=<span class=PrxACRCode style=display:none;>:&lt;ilayer&gt;</span>)
+$NEST(<nobr(\s    [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</nobr>)    $SET(#=<span class=PrxACRCode style=display:none;>:&lt;nobr&gt;</span>)
+$NEST(<nolayer(\s [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</nolayer>) $SET(#=<span class=PrxACRCode style=display:none;>:&lt;nolayer&gt;</span>)
+$NEST(<p(\s       [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</p>)       $SET(#=<span class=PrxACRCode style=display:none;>:&lt;p&gt;</span>)
+$NEST(<small(\s   [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</small>)   $SET(#=<span class=PrxACRCode style=display:none;>:&lt;small&gt;</span>)
+$NEST(<span(\s    [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</span>)    $SET(#=<span class=PrxACRCode style=display:none;>:&lt;span&gt;</span>)
+
+# Rare Elements - I havan't seen these yet
+
+$NEST(<b(\s       [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</b>)       $SET(#=<span class=PrxACRCode style=display:none;>:&lt;b&gt;</span>)
+$NEST(<big(\s     [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</big>)     $SET(#=<span class=PrxACRCode style=display:none;>:&lt;big&gt;</span>)
+$NEST(<em(\s      [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</em>)      $SET(#=<span class=PrxACRCode style=display:none;>:&lt;em&gt;</span>)
+$NEST(<i(\s       [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</i>)       $SET(#=<span class=PrxACRCode style=display:none;>:&lt;i&gt;</span>)
+$NEST(<strong(\s  [^>]+|)>,( ($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+ ($LST(Ad_Headers)($LST(Match_Space)|($NEST(< ! - -,- - >))\#)+)+{1,*} ),</strong>)  $SET(#=<span class=PrxACRCode style=display:none;>:&lt;strong&gt;</span>)

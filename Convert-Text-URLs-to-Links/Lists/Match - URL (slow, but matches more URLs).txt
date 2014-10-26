@@ -1,0 +1,72 @@
+# Item Matched:  URLs (with or without a protocol) - NoAddURL
+# Written by:    ScoJo
+# Created:       Jan 21, 2001
+# Last Modified: Dec  4, 2001
+# Syntax:        $LST(Match_URL)
+# Lists Used:    URL_Schemes Match_Hostname Match_IP_Address Top_Level_Domains Match_URL_SAP
+# Variables:     \9 is the protocol (will be detected if there was none).
+#                \@ is the URL with tags removed, &nbsp; changed to %20, etc.
+#
+# Description:
+#
+#    This is an include-style list for matching a URL.  This version
+#    matches more than just URLs including hostnames and IP addresses,
+#    but due to the leading wildcards, it chews the CPU if placed at
+#    the start of a filter.
+#
+# Notes:
+#
+#    There might be problems where the whole URL isn't grabbed.  The replacement
+#    stack (\#) collects bits of the URL path as the tags are taken out.  However,
+#    there's a limit to the number of times stuff can be pushed onto the stack.
+#    Bottom line: The URL could be cut-off if there is too much stuff to take out.
+#
+(($LST(URL_Schemes)(:/+|%3A(%2F)+))\9( <(^(/|)(a|br|p|td|tr|table|pre|title|option))[^>]+> )+
+ |$SET(9=http://)
+ )
+ ([a-z0-9._]+:[a-z0-9_]+@( <[^>]+> )+|)\#
+ ($LST(Match_IP_Address)
+ |
+    (
+    $LST(Match_Hostname)
+    &
+       (
+          (ftp|news|nntp|telnet|bbs|mud|gopher)
+          [0-9]+.
+          (^$LST(Top_Level_Domains)
+             ([^a-z0-9-]
+             |.$LST(Match_URL_SAP)
+             |.$LST(Top_Level_Domains)
+                ([^a-z0-9-]
+                |.$LST(Match_URL_SAP)
+                )
+             )
+          )
+       &
+          (ftp[0-9]+.$SET(9=ftp://)
+          |(news|nntp)[0-9]+.$SET(9=nntp://)
+          |(telnet|bbs|mud)[0-9]+.$SET(9=telnet://)
+          |gopher[0-9]+.$SET(9=gopher://)
+          )
+       )
+   |)
+ )
+ (( <[^>]+> )+(:[#0:65535])\#|)
+ (
+    ([ ]+{1}|)
+    ( <[^>]+> )+
+    (/|%2F)\#
+    (<(^(/|)(a|br|p|td|tr|table|pre|title|option))[^>]+>
+    |\&(nbsp$SET(#=%20)
+       |amp$SET(#=&)
+       |gt$SET(#=>)
+       |lt$SET(#=<)
+       );
+    |(\([a-z0-9]+\))\#
+    |((?&((^<*>|\s|\"|\'|\(|\)|#|..
+         |[.,!?]$LST(Match_URL_SAP)
+         |\&(amp|gt|lt|nbsp);
+         )))+)\#
+    )+
+    (#[a-z0-9_ -]+|)\#
+ |)
