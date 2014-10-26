@@ -6,7 +6,7 @@ Here are some of my filters for the [The Proxomitron](http://www.proxomitron.inf
 
 - __Ad Container Remover:__  Before AdBlock Plus, there was my Ad Container Remover.  It removes ads and the HTML elements that contain them so no gaps are left behind.
 - __Bright Background Dimmer:__  Lowers the brightness of bright backgrounds in the body tag, tables, table cells and any other tags with a bgcolor attribute. Works with both HTML and CSS.
-- Make All Cookies Session-Only:__  Now all cookies, even those set with JavaScript, can be modified to disappear when your web browser is closed.  Modern browsers now have this option built-in.
+- __Make All Cookies Session-Only:__  Now all cookies, even those set with JavaScript, can be modified to disappear when your web browser is closed.  Modern browsers now have this option built-in.
 - __Plain Text View:__  Converts plain text content to HTML to allow you to customize its appearance.  It also forces Internet Explorer to display files sent with the text/plain content-type as plain text like most other browsers do.
 - __Normalize Small Fonts:__  Reset hard-to-read fonts to the "normal" size set in your browser preferences.  Another accessibility feature found in Firefox and Google Chrome.
 - __Convert Text-only URLs to Links:__  This nasty-looking filter converts text-only URLs to clickable links.  URLs that shouldn't be converted are left alone.  The Linkification add-on for Firefox and Linkify Plus for GreaseMonkey are the modern versions.
