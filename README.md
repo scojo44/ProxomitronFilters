@@ -1,6 +1,6 @@
 # ScoJo's Proxomitron Filters and Lists
 
-Here are some of my filters for the [The Proxomitron](http://www.proxomitron.info/).  I originally published them on the [Proxomitron Users List](http://groups.yahoo.com/group/prox-list/) around 2000-2004.  Since then many have been superceded by browser features and add-ons.  It was a fun challenge to create patterns to match complex strings like URLs and script expressions.
+Here are some of my filters for the [The Proxomitron](http://www.proxomitron.info/).  I originally published them on the [Proxomitron Users List](http://groups.yahoo.com/group/prox-list/) around 2000-2004.  Since then many have been superceded by browser features and add-ons.  It was a fun challenge to create patterns to match complex strings like URLs and script code.
 
 ### Filters
 
